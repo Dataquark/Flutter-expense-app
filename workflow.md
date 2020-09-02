@@ -151,6 +151,7 @@ _We need to get the most recent transaction and sum their amounts, group by thei
     until `length` is reached
     25.1 For example `List.generate(5, (index) {return index * 2})` will result in `[0, 2, 4, 6, 8]`
     25.2 We use such generation inside the Chart class, to create a map (dict): `{'day':weekDay.date, 'amount':totalSum,}`
+    25.3 We also reverse it by adding _reversed.toList()_ at the end of our return, to show the current day on the right side of the Chart
 
     25.3 Motivation behind it is to dynamically create a list of maps to pass into Row widgets
     25.4 Create a for loop, inside the _get_ - go through each transaction and check if the their date has the same day/month/year
@@ -188,3 +189,21 @@ _We need to get the most recent transaction and sum their amounts, group by thei
             ├── SizedBox(height: 4)
             └── Text(label=weekday)
     28.2 Use _BoxDecoration()_ to set the background *color*, *border width*, color and *borderRadius*
+
+**REWRITE THE TRANSACTION LIST WITH ListTiles**
+
+
+29. Inside the *transaction_list.dart* replace the **Card** within _Listview.builder_ with *ListTile* wrapped in a Card
+    .
+    └── Card
+        └── ListTile
+            ├── leading
+            │   └── CirceAvatar
+            ├── title
+            │   └── Text
+            └── subtitle
+                └── Text
+    29.1 We keep the original Card commented out for reference
+
+30. Wrap the _FittedBox_ text in the *chart_bar.dart* with *Container*
+    30.1 Give it a height of 20, to make the bars/days of week all aligned
