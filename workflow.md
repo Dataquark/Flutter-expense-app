@@ -192,7 +192,6 @@ _We need to get the most recent transaction and sum their amounts, group by thei
 
 **REWRITE THE TRANSACTION LIST WITH ListTiles**
 
-
 29. Inside the *transaction_list.dart* replace the **Card** within _Listview.builder_ with *ListTile* wrapped in a Card
     .
     └── Card
@@ -207,3 +206,40 @@ _We need to get the most recent transaction and sum their amounts, group by thei
 
 30. Wrap the _FittedBox_ text in the *chart_bar.dart* with *Container*
     30.1 Give it a height of 20, to make the bars/days of week all aligned
+
+**DATEPICKER**
+
+31. Inside the *new_transacion.dart* create a **Row** within a **Container**
+    31.1 Before the last `FlatButton` and after the `TextField`
+        31.1.1 Change this flat button to `RaisedButton` and give _textColor_ and _color_
+        31.1.2 In the `main.dart` create a **button** inside the _textTheme_, after the _headline6_ with `Colors.white`
+        31.1.3 change the _textColor_ of raised button to that white with `Theme.of(context).textTheme.button.color`
+    31.2 Give a height of 70 to the container
+
+32. Children of the *Row* are `Text('No date is chosen')` and `FlatButton('Chose date')`
+    32.1 *onPressed* within flat button will have a reference to _presentDatePicker_ function
+    32.2 make the text of flat button bold and give it a primary color
+
+33. After *_submitData()* function of the class above create *_presentDatePicker()* function
+    33.1 it has `showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime.now())`
+        33.1.1 this is a native Flutter function we can use
+        33.1.2 this function will return `Future<DateTime>` object
+        33.1.3 we can use `.then((pickedDate) {})` chained method to do something with that future, which is a date user chose
+
+34. Import `intl` inside the *new_transaction.dart*
+
+35. Create *DateTime _selectedDate* variable on top the class, which is not final
+    35.1 we will use it inside the *.then()* of `showDatePicker()`
+    35.2 if _pickedDate == null_ `return;`
+    35.3 then `setState(() {_selectedDate = pickedDate})`
+
+36. In the _Text_ of the **Row** create a ternary operator
+    36.1 `_selectedDate == null ? "No date is chosen!" : "Chosen: ${DateFormat.yMd().format(_selectedDate)}"`
+
+
+37. In the *_submitData()* function add `|| _selectedDate == null` to the data validation (if) step
+    37.1 On top of this function, add `if(_amountController.text.isEmpty) {return;}` to make sure empty amount is not passed
+    37.2 `widget.addNewTx()` will not accept *_selectedDate* argument
+
+38. In the _main.dart_ add another argument (`DateTime chosenDate`) to the _addNewTransaction_ function
+    38.1 instead of always giving `DateTime.now()`, we will accept the _chosenDate_ (_selectedDate, step 37)
