@@ -243,3 +243,25 @@ _We need to get the most recent transaction and sum their amounts, group by thei
 
 38. In the _main.dart_ add another argument (`DateTime chosenDate`) to the _addNewTransaction_ function
     38.1 instead of always giving `DateTime.now()`, we will accept the _chosenDate_ (_selectedDate, step 37)
+
+**DELETE TRANSACTIONS**
+
+39. In the *transaction_list.dart* add `trailing:` to the _ListTile_
+    39.1 it will have `IconButton(icon: Icon(Icons.delete), color: Theme.of(context).errorColor, onPressed: () {})`
+        39.1.1 errorColor is given by default as red
+    39.2 onPressed will have an anonymous (`deleteTx`) function passed
+    39.3 add `deleteTx` to the constructor of the class which is from `final Function deleteTx;` variable
+
+40. In the _main.dart_ create `_deleteTransaction(String id)` function, which returns nothing
+    40.1 `setState()` will be in it
+    40.2 Inside setState, we will use `_userTransactions.removeWhere()` property to remove the item from the list
+    40.3 remoeWhere accepts a function which returns boolean, in our case `tx.id == id`, given id is equal to transaction's id
+    40.4 add *_deleteTransaction* to the `TransactionList()` as the second argument
+
+41. In the *transaction_list.dart*
+    41.1 *onPressed* of trailing Icon will have `() => deleteTx(transactions[index].id)`
+
+_Expanded and ListView DO NOT WORK TOGETHER. Because the latter takes infinite amount of space_
+
+
+**FINAL APP STRUCTURE**
