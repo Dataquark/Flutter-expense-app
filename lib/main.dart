@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './widgets/chart.dart';
-// import './widgets/user_transaction.dart';
 import './models/transaction.dart';
 
 void main() {
@@ -49,14 +48,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // fake data of transactions
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: "t1",
-    //   title: "New socks",
-    //   amount: 10.59,
-    //   date: DateTime.now(),
-    // ),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((element) {
@@ -104,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shopping app"),
+        title: Text("Expenses app"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -114,11 +106,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(
-                _userTransactions, _deleteTransactions), // our own widget
+            TransactionList(_userTransactions, _deleteTransactions),
           ],
         ),
       ),

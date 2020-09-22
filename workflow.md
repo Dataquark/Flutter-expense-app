@@ -1,6 +1,5 @@
 # Shop app
-
-**App Structure so far**
+**INITIAL APP STRUCTURE**
 .
 └── lib
     ├── models
@@ -14,9 +13,9 @@
     │       └── StatefullWidget: Column: [NewTransaction, TransactionList] -> addNewTransaction: setState()
     └── main.dart
         └── Scaffold: [Appbar:[Text, Button], body:[SingleScrollView:Column:[Container:Card:Text, UserTransaction]], FloatingButton]
+__________
 
 **STEPS**
-
 1. Create a new _transactions.dart_ file
     1.1 It will have a `Transactions` class
     1.2 All four properties are required - _id, title, amount, date_
@@ -35,9 +34,9 @@
 5. Each _Card_ will have a **Row** widget
     5.1 _Row_ will consist of two elements: `Container`, which will hold the _price_ of transactions
     5.2 and another `Column`, which will have transaction's title and date on top of each other
+__________
 
 **REFACTORING THE CODE**
-
 6. We will create two folders: _models_ for having dart classes and _widgets_ for our widgets
     6.1 Move the `transaction.dart` to models
 
@@ -50,7 +49,6 @@
     8.1 It will have a method _addNewTransaction_ which will populate our `Transaction` dart class with new elements
     8.2 It will also **setState**, everytime there is a new element
     8.3. `TrasactionList` and `NewTransaction` widgets should have pointers in them
-
 
 9. **ListView** vs **ListView.builder()**
     9.1 The former will hold all the items in the list in memory
@@ -68,10 +66,9 @@
 12. In the _main.dart_ we add two **IconButtons**
     12.1 One to the _Appbar_
     12.2 Second as a `FloatingActionButton` on the bottom
-
+__________
 
 **ANOTHER REFACTOR**
-
 13. We will have to transform main dart widget to _Statefull_ if we want to build `ModalBottomSheetView`
     13.1 `showModalBottomSheet` needs two arguments:
         13.1.1 _context_, which we provide by `BuildContext ctx` in our _startAddNewTransaction_ function
@@ -84,10 +81,9 @@
     13.4 **All in all, partly redo the previous refactoring. Teacher's way of teaching it is really weird.**
         13.4.1 *(BuildContext context) = _startAddNewTransaction(context)*: same context when passing the function to `onPressed` inside Icons
 
-14. We do not need to wrap our _NewTransaction()_ class - inside the _showModalBottomSheet_ function with `GestureDetector` with _onTap: () {}_
-    and _behaviour: HitTestBehavior.opaque_ as shown in the video - to avoid the sheet closing off with a tap
+14. We do not need to wrap _NewTransaction()_ class
+    - inside the _showModalBottomSheet_ function with `GestureDetector` with _onTap: () {}_ and _behaviour: HitTestBehavior.opaque_ as shown in the video - to avoid the sheet closing off with a tap
     14.1 Because the new Flutter has this behaviour by default: the sheet is not closed off
-
 
 15. We have a problem of Modal sheet not keeping the values we pass into *title* and *amount* fields
     15.1 Because our _NewTransaction()_ class is _Stateless_: it does not keep the data internally
@@ -103,9 +99,9 @@
     17.1 We need to use _Navigator.of(context).pop()_ in the _NewTransaction_ class
     17.2 `context` is here similar to `widgets`, gives us an access to the internal context of the Widget
     17.3 Without it, Navigator would not know which modal sheet to pop after submitting the data
+__________
 
 **THEMING**
-
 18. We add the `theme` in the _main.dart_ to *MaterialApp*
     18.1 It will have `ThemeData()` class, which will have _primarySwatch_ (_accentColor_) and _primaryColor_
     18.2 The former generates different shades based on the latter
@@ -114,9 +110,9 @@
 19. In the *transaction_list.dart*, set the colors of the text and border to primary color
     19.1 Use `Theme.of(context).primaryColor` to do so.
     19.2 We again using the `context` which gives us an access to global theming data of our Material app
+__________
 
 **FONTS**
-
 20. Create `assets/fonts` folder in the global directory and put all downloaded fonts from Google Fonts
     20.1 In `pubspec.yaml` file change the fonts
 
@@ -127,9 +123,9 @@
                      You can access it via `Theme.of(context).textTheme.headline6`
     21.2 _appBarTheme_ variable which expects _AppBarTheme()_ object
         21.2.1 You can set the text theme for the app bar the same way you set the text theme for transaction list items as above.
+__________
 
 **IMAGES**
-
 22. In the _pubspec.yaml_ file, add images as `assets`
     22.1 Give full path to the images: assets/images/image-we-have
     22.2 _png, jpeg, jpg, gif_ are supported out of the box
@@ -139,9 +135,9 @@
         23.1.1 Use *Column* to have *Text* and *Image.asset(full path)* above each other
         23.1.2 As a text style use global `textTheme.headline6`
     23.2 If not, then return the list.
+__________
 
 **CREATING THE CHART**
-
 24. Create *Chart()* class within _chart.dart_ file
     24.1 It is a stateless widget which returns Card -> Row -> Columns of bars with amount on top and weekday on the bottom
 
@@ -157,12 +153,13 @@ _We need to get the most recent transaction and sum their amounts, group by thei
     25.4 Create a for loop, inside the _get_ - go through each transaction and check if the their date has the same day/month/year
         25.4.1 If true, `totalSum += recentTransaction['amount']`
 26. Create a getter for `weeklyTotal` in _chart.dart_
-    26. use `List.fold(initial_value (previous, element))` function to create a weekly sum from the _groupedTransactions_
+    26.1 use `List.fold(initial_value (previous, element))` function to create a weekly sum from the _groupedTransactions_
 
 27. Lists offer to `.where()` clause over each element inside and to keep the ones which pass certain condition
     into a new list using _getters_
     27.1 For example `[1, 2, 3, 4, 5].where((i) {return i <=3 })` will return a list of elements which are `<=3`
     27.2 We use this example in _main.dart_ to get _recentTransactions_
+         ```
          List<Transaction> get _recentTransactions {
             return _userTransactions.where((element) {
             return element.date.isAfter(
@@ -172,9 +169,10 @@ _We need to get the most recent transaction and sum their amounts, group by thei
             );
         }).toList();
         }
+        ```
+__________
 
 **DRAWING THE BARS**
-
 28. Create *ChartBar()* class inside *chart_bar.dart* file
     28.1 Structure:
         .
@@ -189,9 +187,9 @@ _We need to get the most recent transaction and sum their amounts, group by thei
             ├── SizedBox(height: 4)
             └── Text(label=weekday)
     28.2 Use _BoxDecoration()_ to set the background *color*, *border width*, color and *borderRadius*
+__________
 
 **REWRITE THE TRANSACTION LIST WITH ListTiles**
-
 29. Inside the *transaction_list.dart* replace the **Card** within _Listview.builder_ with *ListTile* wrapped in a Card
     .
     └── Card
@@ -206,9 +204,9 @@ _We need to get the most recent transaction and sum their amounts, group by thei
 
 30. Wrap the _FittedBox_ text in the *chart_bar.dart* with *Container*
     30.1 Give it a height of 20, to make the bars/days of week all aligned
+__________
 
 **DATEPICKER**
-
 31. Inside the *new_transacion.dart* create a **Row** within a **Container**
     31.1 Before the last `FlatButton` and after the `TextField`
         31.1.1 Change this flat button to `RaisedButton` and give _textColor_ and _color_
@@ -236,16 +234,15 @@ _We need to get the most recent transaction and sum their amounts, group by thei
 36. In the _Text_ of the **Row** create a ternary operator
     36.1 `_selectedDate == null ? "No date is chosen!" : "Chosen: ${DateFormat.yMd().format(_selectedDate)}"`
 
-
 37. In the *_submitData()* function add `|| _selectedDate == null` to the data validation (if) step
     37.1 On top of this function, add `if(_amountController.text.isEmpty) {return;}` to make sure empty amount is not passed
     37.2 `widget.addNewTx()` will not accept *_selectedDate* argument
 
 38. In the _main.dart_ add another argument (`DateTime chosenDate`) to the _addNewTransaction_ function
     38.1 instead of always giving `DateTime.now()`, we will accept the _chosenDate_ (_selectedDate, step 37)
+__________
 
 **DELETE TRANSACTIONS**
-
 39. In the *transaction_list.dart* add `trailing:` to the _ListTile_
     39.1 it will have `IconButton(icon: Icon(Icons.delete), color: Theme.of(context).errorColor, onPressed: () {})`
         39.1.1 errorColor is given by default as red
@@ -262,6 +259,86 @@ _We need to get the most recent transaction and sum their amounts, group by thei
     41.1 *onPressed* of trailing Icon will have `() => deleteTx(transactions[index].id)`
 
 _Expanded and ListView DO NOT WORK TOGETHER. Because the latter takes infinite amount of space_
+__________
 
-
-**FINAL APP STRUCTURE**
+**FINAL APP STRUCTURE**.
+└── lib
+    ├── models
+    │   └── Transaction(id, title, amount, date)
+    ├── widgets
+    │   ├── ChartBar(label, spendingAmount, spendingPctOfTotal)
+    │   │   └── Column
+    │   │       ├── Container(height:20)
+    │   │       │   └── FittedBox(Text(spendingAmount))
+    │   │       ├── SizedBox(height: 4)
+    │   │       ├── Container(height: 4)
+    │   │       │   └── Stack
+    │   │       │       ├── Container(BoxDecoration)
+    │   │       │       └── FractionallySizedBox(spendingPctOfTotal, Container(BoxDecoration))
+    │   │       ├── SizedBox(height: 4)
+    │   │       └── Text(label)
+    │   ├── Chart(recentTransactions)
+    │   │   ├── get: groupedTransactionValues; returns Map(day, amount)
+    │   │   ├── get: weeklySpending; returns groupedTransactionValues.fold
+    │   │   └── Card(elevation: 6, margin: 20)
+    │   │       └── Padding(8)
+    │   │           └── Row(groupedTransactionValues.map((data){inner_widget}.toList())
+    │   │               └── inner_widget: Flexible(fit:tight, ChartBar(day, amount, weeklySpending))
+    │   ├── NewTransaction(func addNewTx) <- StateFull Widget
+    │   │   └── _NewTransactionState(_titleController, _amountController, _selectedDate)
+    │   │       ├── func: _submitData()
+    │   │       ├── func: _presentDatePicker()
+    │   │       └── Card(elevation: 5)
+    │   │           └── Container(padding: 10)
+    │   │               └── Column(crossAxisAlignment: end)
+    │   │                   ├── TextField(decoration, controller, onSubmitted:submitData) -> for title
+    │   │                   ├── TextField(decoration, controller, keyboardType, onSubmitted:submitData) -> for amount
+    │   │                   ├── Container(height: 70)
+    │   │                   │   └── Row
+    │   │                   │       ├── Expanded(Text(_selectedDate))
+    │   │                   │       └── FlatButton(textColor, onPressed:_presentDatePicker)
+    │   │                   │           └── Text("Choose Date", style)
+    │   │                   └── RaisedButton(onPressed:submitData, color, textColor)
+    │   │                       └── Text("Add transaction")
+    │   └── TransactionList(transactions, func _deleteTx)
+    │       └── Container(height: 450)
+    │           ├── if transactions.isEmpty
+    │           │   └── Column
+    │           │       ├── Text("No transactions yet", style)
+    │           │       ├── SizedBox(height: 50)
+    │           │       └── Container(height: 200)
+    │           │           └── Image.asset(path to img)
+    │           └── if not empty
+    │               └── ListView.builder
+    │                   ├── itemBuilder
+    │                   │   └── Card(elevation: 5, maring: symmetric(5/8))
+    │                   │       └── ListTile
+    │                   │           ├── leading: CircleAvatar(radius: 30)
+    │                   │           │   └── Padding(6, FittedBox(Text(transactions.amount)))
+    │                   │           ├── title: Text(transactions.title, style)
+    │                   │           ├── subtitle: Text(DateFormat(transactions.date))
+    │                   │           └── trailing: IconButton(icon: delete, color, onPressed: _deleteTx(transactions.id))
+    │                   └── itemCount: transactions.length
+    └── main.dart
+        ├── MyApp <- StateLess
+        └── MyHomePage <- StateFull
+            └── _MyHomePageState(_userTransactions)
+                ├── get: _recentTransactions(_userTransactions with date > 7 days)
+                ├── func:  _addNewTransaction(txTitle, txAmount, chosenDate)
+                │   └── setState(_userTransactions.add(newTx))
+                ├── func: _startAddNewTransaction(BuildContext ctx)
+                │   ├── conext: ctx
+                │   └── builder: NewTransaction(_addNewTransaction)
+                ├── func: _deleteTransactions(String id)
+                │   └── setState(_userTransactions.removeWhere())
+                └── Scaffold
+                    ├── appBar: AppBar
+                    │   ├── title: Text("Expenses App")
+                    │   └── actions: IconButton(icon, onPressed: _startAddNewTransaction)
+                    ├── body: SingleChildScrollView
+                    │   └── Column
+                    │       ├── Chart(_recentTransactions)
+                    │       └── TransactionList(_userTransactions, _deleteTransactions)
+                    ├── floatingActionButtonLocation
+                    └── floatingActionButton
+                        └── FloatingActionButton(icon, onPressed: _startAddNewTransaction)
