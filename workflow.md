@@ -342,3 +342,38 @@ __________
                     ├── floatingActionButtonLocation
                     └── floatingActionButton
                         └── FloatingActionButton(icon, onPressed: _startAddNewTransaction)
+__________
+
+**CHOOSING THE WIDGET SIZES DYNAMICALLY**
+
+42. In the _main.dart_ file
+    42.1 Wrap both `Chart` and `TransactionList` widgets with a `Container`
+    42.2 Move the `AppBar` into a separate variable _appBar_ above the `Scaffold`
+        42.2.1 This way we can access the height of the appbar, which we will use in our dynamic calculations
+    42.3 Give the containers _height_ property, which will be calculated dynamically
+
+43. To calculate the height dynamically, we will use `MediaQuery.of(context)` from material package
+    43.1 Full calculation:
+        `(MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top) * fraction`
+        43.1.1 _fraction_ is `0.3` for _Chart_ widget and `0.7` for _TransactionList_ widget
+    
+44. Explanations:
+    44.1 `MediaQuery.of(context).size.height` is the _full screen_ height
+    44.2 `appBar.preferredSize.height` is the height of the _appBar_ variable we extracted
+    44.3 `MediaQuery.of(context).padding.top` is the height of a status bar on top of the screen (battery info)
+__________
+
+45. In the *chart_bar.dart* wrap the returned `Column` with `LayoutBuilder`
+    45.1 `LayoutBuilder` will have _builder_ property which has `(btx, constraints) {}`
+        45.1.2 Move the entire column inside the curly braces, like `...{return Column(...)}`
+    45.2 _constraints_ argument gives an information about the current widget (_Row_ in our case)
+        45.2.1 Because the parent of our `Column` is `Row` inside the _chart.dart_ file
+        45.2.2 _constraints_ gives the `height` and `width` of that _Row_ element
+    45.3 We will use `constraints.maxHeight * fraction` as a dynamic calculation for the widgets of *chartBar*
+        45.3.1 Container for _spendingAmout_ will get `0.15` as a fraction
+        45.3.2 SizedBox for the space after will get `0.05`
+        45.3.3 Container for the actual bars will get `0.6`
+        45.3.4 SizedBox for for space after will get `0.05`
+        45.3.5 Text(label) which we will wrap in a Container will get `0.15`
+    45.4 _Total sum of all the franctions must be `1`_
+    45.5 Wrap the `Text(label)` with a _FittedBox_ to make it stable
