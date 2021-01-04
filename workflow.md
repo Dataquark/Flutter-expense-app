@@ -370,10 +370,58 @@ __________
         45.2.1 Because the parent of our `Column` is `Row` inside the _chart.dart_ file
         45.2.2 _constraints_ gives the `height` and `width` of that _Row_ element
     45.3 We will use `constraints.maxHeight * fraction` as a dynamic calculation for the widgets of *chartBar*
-        45.3.1 Container for _spendingAmout_ will get `0.15` as a fraction
+        45.3.1 Container for _spendingAmount_ will get `0.15` as a fraction
         45.3.2 SizedBox for the space after will get `0.05`
         45.3.3 Container for the actual bars will get `0.6`
         45.3.4 SizedBox for for space after will get `0.05`
         45.3.5 Text(label) which we will wrap in a Container will get `0.15`
     45.4 _Total sum of all the franctions must be `1`_
     45.5 Wrap the `Text(label)` with a _FittedBox_ to make it stable
+__________
+
+**LANDSCAPE MODE**
+
+46. If we do not want to enable landscape mode for the app, we can do it in _main.dart_
+    46.1 in the `main` function on top, add `WidgetsFlutterBinding.ensureInitialized()`
+        46.1.1 it will make sure that restrictions will work on all devices
+    46.2 and also add the list of enabled modes, `SystemChrome.setPreferredOrientations([])`
+        46.2.1 list will have `DeviceOrientation.portraitUp, DeviceOrientation.portraitDown,`
+        46.2.2 which are the only allowed orientations for the app
+
+47. In the _main.dart_ add `Row()` to the body of the app, above the `Chart, TransactionList` containers
+    47.1 also add *bool _showChart = false* class variable on the class
+    47.2 this row will have `Text` and `Switch()` children and `MainAxisAlignment.center`
+        47.2.1 `Switch()` will have a value, which is our `_showChart` variable
+        47.2.2 also it will have `onChanged` anonymous function
+        47.2.3 this function will receive `val` variable from flutter
+        47.2.4 and it will set the `_showChart` variable to this `val` **INSIDE `setState() {}` FUNCTION**
+            47.2.4.1 it must be inside setState, because we will have to render the screen everytime the switch is toggled
+
+48. After the `Row()` widget, we will put the next two containers into *ternary operator*
+    48.1 `_showChart ? Container(Chart) : Container(TransactionList)`
+    48.2 so if the switch is toggled we will show the chart, if not we will show the transactions' list
+    48.3 change the *height* of *Chart* container from `0.3` fraction to `0.7`, same as the transaction list height
+        48.3.1 so, when the chart is shown it will not be squished
+        48.3.2 the picture still has _overflow_ issue
+
+49. Inside the *transaction_list.dart*, wrap the column that contains the image with `LayoutBuilder`
+    49.1 **Wrap ONLY THE COLUMN, NOT THE ListView.builder**
+    49.2 we wrap it because we want to have access to `constraints` variable
+    49.3 we set the height of the image to `constraints.maxHeight * 0.6`, 60% of the parent height
+    49.4 this will solve the issue of image overflowing at the bottom of the screen
+
+50. In the _main.dart_
+    50.1 create `_isLandscape` boolean variable **INSIDE** the widget BuildContext
+        50.1.1 `final _isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;`
+    50.2 after the appBar variable, create another variable called `final txListWidget`
+        50.2.1 take _Container_ for the _Image_ and put it to that new variable
+        50.2.2 in the ternary operator from step 48, just use the new variable `_showchart ? ... : txListWidget`
+    50.3 before the `Row()` widget put `if (_isLandscape)` condition
+        50.3.1 **BUT DO NOT WRAP THE `ROW()` WITH {}**, because it is a speacial syntax
+        50.3.2 it will allow us to show the Row (which is our switch) only in the landscape mode
+    50.4 put the `if (_isLandscape)` before the ternary operator from the step 48 too
+        50.4.1 so the ternary operator is shown only in the landscape mode
+    50.5 in between the `Row()` and ternary operator, put `if (!_isLandscape)` twice
+        50.5.1 one for `Chart` container with its height back to `0.3`
+        50.5.2 another for `txListWidget`
+        50.5.3 so both widgets are shown when we are *NOT* in the landscape mode
