@@ -425,3 +425,29 @@ __________
         50.5.1 one for `Chart` container with its height back to `0.3`
         50.5.2 another for `txListWidget`
         50.5.3 so both widgets are shown when we are *NOT* in the landscape mode
+
+51. In the *new_transaction.dart* file
+    51.1 change the padding of the top Container inside the Card
+        51.1.1 from `EdgeInsets.all()` to `EdgeInsets.only()`
+    51.2 the latter will have 4 attributes _top, left, right, bottom_
+        51.2.1 the first 3 will be set to 10
+        51.2.3 the last one will be set to `MediaQuery.of(context).viewInsets.bottom + 10`
+            51.2.3.1 it add the bottom inset and 10 pixels of padding, so when typing the _Title_ property
+                        we will able to see _Amount_ property as well. It will open up part of the sytem that is obscured
+                        by device's soft keyboard (letters, numerical)
+
+52. Wrap the `Card` inside `SingleChildScrollView` to solve the overflow issue with the bottom modal sheet
+
+53. In the *transaction_list.dart*
+    53.1 we have to show the _IconButton_ within the `trailing` part in a ternary operator
+    53.2 ternary condition is `MediaQuery.of(context).size.width > 460` - if the size of the screen is bigger than 460
+        53.2.1 we will show `FlatButton.icon()`, which will have _onPressed, icon, textColor, label_ arguments
+            53.2.1.1 the first three are copy pasted from our _IconButton_
+            53.2.1.2 the last one is set to `Text('Delete')`
+    53.3 overall it allows us to show a text after the trash button if the screen width is bigger than 460 px
+        53.3.1 or usually in landscape mode
+
+54. In the _main.dart_
+    54.1 set the `MediaQuery.of(context)` as a separate class variable on top, `final mediaquery = ...`
+    54.2 and replace all the instance of the former with the latter, to reuse the same variable everywhere
+    

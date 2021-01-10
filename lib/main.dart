@@ -105,9 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // step 54 in the Workflow
+    final mediaquery = MediaQuery.of(context);
     // step 50 in the workflow
-    final _isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final _isLandscape = mediaquery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: Text("Expenses app"),
@@ -121,9 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // step 50 in the workflow
     final txListWidget = Container(
-      height: (MediaQuery.of(context).size.height -
+      height: (mediaquery.size.height -
               appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top) *
+              mediaquery.padding.top) *
           0.7,
       child: TransactionList(_userTransactions, _deleteTransactions),
     );
@@ -154,9 +155,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // step 50 in the workflow
             if (!_isLandscape)
               Container(
-                height: (MediaQuery.of(context).size.height -
+                height: (mediaquery.size.height -
                         appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
+                        mediaquery.padding.top) *
                     0.3,
                 child: Chart(_recentTransactions),
               ),
@@ -169,9 +170,9 @@ class _MyHomePageState extends State<MyHomePage> {
               // step 48 in the workflow
               _showChart
                   ? Container(
-                      height: (MediaQuery.of(context).size.height -
+                      height: (mediaquery.size.height -
                               appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
+                              mediaquery.padding.top) *
                           0.7,
                       child: Chart(_recentTransactions),
                     )
